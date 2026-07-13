@@ -684,7 +684,7 @@ export const SKILLS_MAP: Technology[] = [
     detect: {
       configFiles: ["CMakeLists.txt"],
       configFileContent: {
-        patterns: ["find_package(GTest", "GTest::gtest", "FetchContent.*googletest", "gtest", "gmock"],
+        patterns: ["find_package(GTest", "GTest::gtest", "GTest::gmock", "FetchContent.*googletest"],
         files: ["CMakeLists.txt"],
       },
     },

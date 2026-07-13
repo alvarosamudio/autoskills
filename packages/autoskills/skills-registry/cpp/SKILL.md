@@ -29,7 +29,7 @@ metadata:
 | C++23 | `g++ -std=c++23 -o out file.cpp` | Cutting edge |
 | Debug | `g++ -g -fsanitize=address,undefined -o out file.cpp` | ASan + UBSan |
 | Optimize | `g++ -O2 -march=native -o out file.cpp` | Release build |
-| Concepts (C++20) | `g++ -std=c++20 -concepts -o out file.cpp` | GCC concepts |
+| Concepts (C++20) | `g++ -std=c++20 -o out file.cpp` | Concepts included |
 
 ### Common Flags
 
@@ -100,8 +100,16 @@ std::mutex mtx;
     // critical section
 }
 
-// Scope guard (C++11 pattern)
-auto guard = gsl::finally([&]() { cleanup(); });
+// Scope guard (C++11 pattern with custom RAII)
+class ScopeGuard {
+    std::function<void()> f_;
+public:
+    explicit ScopeGuard(std::function<void()> f) : f_(std::move(f)) {}
+    ~ScopeGuard() { if (f_) f_(); }
+    void dismiss() { f_ = nullptr; }
+};
+
+auto guard = ScopeGuard([&]() { cleanup(); });
 ```
 
 ## STL Quick Reference
@@ -163,16 +171,42 @@ counter.fetch_add(1, std::memory_order_relaxed);
 
 // Thread pool pattern
 class ThreadPool {
-    std::vector<std::thread> workers_;
+    std::vector<std::jthread> workers_;
     std::queue<std::function<void()>> tasks_;
     std::mutex mtx_;
     std::condition_variable cv_;
     bool stop_ = false;
 public:
+    ThreadPool(size_t threads = std::thread::hardware_concurrency()) {
+        for (size_t i = 0; i < threads; ++i) {
+            workers_.emplace_back([this] {
+                while (true) {
+                    std::function<void()> task;
+                    {
+                        std::unique_lock lock(mtx_);
+                        cv_.wait(lock, [this] { return stop_ || !tasks_.empty(); });
+                        if (stop_ && tasks_.empty()) return;
+                        task = std::move(tasks_.front());
+                        tasks_.pop();
+                    }
+                    task();
+                }
+            });
+        }
+    }
+
+    ~ThreadPool() {
+        {
+            std::lock_guard lock(mtx_);
+            stop_ = true;
+        }
+        cv_.notify_all();
+    }
+
     template<typename F>
     void enqueue(F&& f) {
         {
-            std::unique_lock lock(mtx_);
+            std::lock_guard lock(mtx_);
             tasks_.emplace(std::forward<F>(f));
         }
         cv_.notify_one();
@@ -206,7 +240,10 @@ class StaticVector {
     std::array<T, N> data_;
     size_t size_ = 0;
 public:
-    void push_back(const T& val) { data_[size_++] = val; }
+    void push_back(const T& val) {
+        if (size_ >= N) throw std::length_error("StaticVector capacity exceeded");
+        data_[size_++] = val;
+    }
     size_t size() const { return size_; }
 };
 ```

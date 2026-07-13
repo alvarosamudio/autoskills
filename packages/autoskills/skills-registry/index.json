@@ -13022,7 +13022,7 @@
     "c": {
       "source": "autoskills",
       "skillPath": "autoskills/c",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],
@@ -13042,7 +13042,7 @@
     "cpp": {
       "source": "autoskills",
       "skillPath": "autoskills/cpp",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],
@@ -13062,7 +13062,7 @@
     "cmake": {
       "source": "autoskills",
       "skillPath": "autoskills/cmake",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],
@@ -13082,7 +13082,7 @@
     "qt": {
       "source": "autoskills",
       "skillPath": "autoskills/qt",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],
@@ -13102,7 +13102,7 @@
     "conan": {
       "source": "autoskills",
       "skillPath": "autoskills/conan",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],
@@ -13122,7 +13122,7 @@
     "vcpkg": {
       "source": "autoskills",
       "skillPath": "autoskills/vcpkg",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],
@@ -13142,7 +13142,7 @@
     "meson": {
       "source": "autoskills",
       "skillPath": "autoskills/meson",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],
@@ -13162,7 +13162,7 @@
     "googletest": {
       "source": "autoskills",
       "skillPath": "autoskills/googletest",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],
@@ -13182,7 +13182,7 @@
     "doxygen": {
       "source": "autoskills",
       "skillPath": "autoskills/doxygen",
-      "commitSha": "local",
+      "commitSha": "7ebf5ce92e8ed0521949111d8ff91ec5047d7c83",
       "files": [
         "SKILL.md"
       ],

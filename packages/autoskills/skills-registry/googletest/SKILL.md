@@ -111,6 +111,7 @@ using testing::Return;
 using testing::NotNull;
 using testing::AllOf;
 using testing::Ge;
+using testing::Le;
 
 EXPECT_CALL(mock, func(HasSubstr("hello")));
 EXPECT_CALL(mock, func(AllOf(Ge(0), Le(100))));
@@ -150,11 +151,8 @@ TYPED_TEST_SUITE(NumericTest, ::testing::Types<int, float, double>);
 ### Death Tests
 
 ```cpp
-TEST(AbortTest, NullPointerCausesAbort) {
-    EXPECT_DEATH({
-        int* p = nullptr;
-        *p = 42;
-    }, ".*");
+TEST(AbortTest, AssertionCausesAbort) {
+    EXPECT_DEATH(std::abort(), ".*");
 }
 ```
 
@@ -170,7 +168,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
-find_package(GTest REQUIRED)
 
 add_executable(tests test_main.cpp test_mylib.cpp)
 target_link_libraries(tests PRIVATE GTest::gtest_main mylib)

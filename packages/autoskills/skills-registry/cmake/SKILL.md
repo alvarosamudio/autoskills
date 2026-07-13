@@ -141,6 +141,7 @@ endif()
 include(GNUInstallDirs)
 
 install(TARGETS mylib
+    EXPORT mylib-config
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )

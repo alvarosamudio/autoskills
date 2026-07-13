@@ -98,9 +98,20 @@ import QtQuick
 Rectangle {
     id: root
     color: "white"
+    width: 300; height: 200
+
+    Text {
+        id: label
+        text: "Waiting..."
+    }
 
     MouseArea {
+        anchors.fill: parent
         onClicked: console.log("Clicked at", mouse.x, mouse.y)
+    }
+
+    ListModel {
+        id: listModel
     }
 
     Connections {
@@ -203,15 +214,13 @@ signals:
 };
 
 // Usage
-QThread *thread = QThread::create([=]() {
-    // Or use QtConcurrent::run
-});
+QThread *thread = new QThread;
 Worker *worker = new Worker;
 worker->moveToThread(thread);
 connect(thread, &QThread::started, worker, [=]() { worker->doWork("data"); });
+connect(thread, &QThread::finished, worker, &QObject::deleteLater);
 connect(worker, &Worker::resultReady, this, &MainWindow::handleResult);
 connect(worker, &Worker::resultReady, thread, &QThread::quit);
-connect(thread, &QThread::finished, worker, &QObject::deleteLater);
 connect(thread, &QThread::finished, thread, &QObject::deleteLater);
 thread->start();
 ```

@@ -168,7 +168,7 @@ meson configure builddir -Db_lto=true
 - Build directory must not exist before `meson setup`
 - Use `--wipe` to reconfigure (deletes build dir)
 - Dependencies default to `required: true` — set `required: false` for optional
-- `meson.compile()` is preferred over raw `ninja` invocation
+- `meson compile -C builddir` is preferred over raw `ninja` invocation
 - Subprojects are in `subprojects/` directory — use `meson subprojects update`
 - WrapDB wraps are auto-downloaded on first build
 - Use `import('pkgconfig').generate()` to create `.pc` files

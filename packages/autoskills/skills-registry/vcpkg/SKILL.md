@@ -30,7 +30,7 @@ metadata:
 | Update packages | `vcpkg update` | Show outdated packages |
 | Export package | `vcpkg export <name>` | Create relocatable package |
 | List installed | `vcpkg list` | Show installed packages |
-| Detect triplet | `vcpkg detect` | Auto-detect target triplet |
+| Help triplet | `vcpkg help triplet` | List available triplets |
 
 ### vcpkg.json (Manifest)
 
@@ -103,14 +103,15 @@ cmake --build build
 
 ```bash
 # Custom triplet for static linking on Linux
-cat > custom-triplet.cmake << 'EOF'
+cat > $VCPKG_ROOT/triplets/custom-triplet.cmake << 'EOF'
 set(VCPKG_TARGET_ARCHITECTURE x64)
 set(VCPKG_CRT_LINKAGE static)
 set(VCPKG_LIBRARY_LINKAGE static)
 set(VCPKG_CMAKE_CONFIGURE_OPTIONS -DCMAKE_POSITION_INDEPENDENT_CODE=ON)
 EOF
 
-cmake -B build -DCMAKE_TOOLCHAIN_FILE=.../vcpkg.cmake \
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+  --overlay-triplets=$VCPKG_ROOT/triplets \
   -DVCPKG_TARGET_TRIPLET=custom-triplet
 ```
 

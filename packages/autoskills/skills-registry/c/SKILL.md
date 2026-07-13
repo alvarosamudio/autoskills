@@ -55,8 +55,11 @@ metadata:
 int *arr = malloc(n * sizeof(int));
 if (!arr) { /* handle error */ }
 
-// Reallocate
-arr = realloc(arr, new_size * sizeof(int));
+// Reallocate: use temporary to preserve original on failure
+if (new_size > SIZE_MAX / sizeof(int)) { /* handle overflow */ }
+void *tmp = realloc(arr, new_size * sizeof(int));
+if (tmp) arr = tmp;
+else     { /* handle failure — arr still valid */ }
 
 // Free
 free(arr);
@@ -126,14 +129,15 @@ gcc -o program main.c -L. -lmylib
 
 ```bash
 gcc -shared -fPIC -o libmylib.so file1.c file2.c
-gcc -o program main.c -L. -lmylib -Wl,-rpath,.
+gcc -o program main.c -L. -lmylib -Wl,-rpath,'$ORIGIN'
+# Only use $ORIGIN when libraries are distributed alongside the executable
 ```
 
 ## Common Gotchas
 
 - Always check `malloc`/`calloc` return values for `NULL`
 - Never use `gets()` — use `fgets()` instead
-- Free memory in the same order it was allocated if using complex dependency chains
+- Free memory in dependency order: release dependent objects before their owning containers
 - Use `size_t` for sizes and indices, not `int`
 - Initialize all variables before use
 - Use `const` for read-only parameters
