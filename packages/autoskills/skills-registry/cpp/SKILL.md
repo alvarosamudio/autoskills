@@ -61,7 +61,7 @@ auto ptr = std::make_unique<MyClass>(args);
 auto shared = std::make_shared<MyClass>(args);
 
 // Weak reference (no ownership)
-std::weak_ref<MyClass> weak = shared;
+std::weak_ptr<MyClass> weak = shared;
 if (auto locked = weak.lock()) {
     // Use locked
 }

@@ -225,7 +225,7 @@ gtest_discover_tests(tests)
 
 ## Verification Checklist
 
-- [ ] All tests pass with `meson test` or `ctest`
+- [ ] All tests pass with `ctest` or `./tests`
 - [ ] No memory leaks (ASan clean)
 - [ ] Mock expectations are verified (no uninteresting mock warnings)
 - [ ] Death tests cover critical invariants
